@@ -1,0 +1,84 @@
+// Spiral movement state machine.
+
+// Arrays are already defined with this interface:
+// typedef struct arr_##name {
+//   int size;
+//   type *arr;
+// } arr_##name;
+//
+// arr_##name alloc_arr_##name(int len) {
+//   arr_##name a = {len, len > 0 ? malloc(sizeof(type) * len) : NULL};
+//   return a;
+// }
+//
+//
+arr_arr_integer spiralNumbers(int n) {
+    
+    typedef enum{
+        right,
+        down,
+        left,
+        up,
+    } State;
+    State currentState = right;
+    
+    arr_arr_integer spiralArray = alloc_arr_arr_integer(n);
+    for(int i = 0; i < n; i ++){
+        spiralArray.arr[i] = alloc_arr_integer(n);
+    }
+    
+    
+    
+    
+    int counter = 1;
+    int col = 0;
+    int row = 0;
+    while(1){
+        switch(currentState){
+                case(right):
+                    spiralArray.arr[row].arr[col] = counter;
+                    col++;
+                    if(col == n || spiralArray.arr[row].arr[col] != 0){
+                        col--;
+                        row++;
+                        currentState = down;
+                    }
+                    break;
+                
+                case(down):
+                    spiralArray.arr[row].arr[col] = counter;
+                    row++;
+                    if(row == n || spiralArray.arr[row].arr[col] != 0){
+                        row--;
+                        col--;
+                        currentState = left;
+                    }
+                    break;
+                case(left):
+                    spiralArray.arr[row].arr[col] = counter;
+                    col--;
+                    if(col == -1 || spiralArray.arr[row].arr[col] != 0){
+                        col++;
+                        row--;
+                        currentState = up;
+                    }
+                    break;
+                case(up):
+                    spiralArray.arr[row].arr[col] = counter;
+                    row--;
+                    if(spiralArray.arr[row].arr[col] != 0){
+                        col++;
+                        row++;
+                        currentState = right;
+                    }
+                    break;
+                default:
+                    break;      
+        }
+        counter++;
+        if(counter == ((n*n)+1)){
+            return spiralArray;
+        }
+        
+    }
+}
